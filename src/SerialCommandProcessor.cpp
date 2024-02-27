@@ -1,12 +1,12 @@
 #include "SerialCommandProcessor.h"
 
-SerialCommandProcessor::SerialCommandProcessor(HardwareSerial* serialPort, int numCommands, const char* newCommandStrings[], const char delimiter) {
+SerialCommandProcessor::SerialCommandProcessor(HardwareSerial *serialPort, int numCommands, const char* newCommandStrings[], const char delimiter) {
 
   // Set the number of commands
   this->numCommands = numCommands;
   this->delimiter = delimiter;
   this->serialPort = serialPort;
-
+  
   // Dynamically allocate memory for command strings
   commandStrings = new String[numCommands];
 
@@ -16,11 +16,25 @@ SerialCommandProcessor::SerialCommandProcessor(HardwareSerial* serialPort, int n
   }
 }
 
+void SerialCommandProcessor::processSerialCommand(CommandHandler commandHandlers[], const char* helpTxt) {
+	
+  if (this->serialPort.available()) {
+    CommandData CDATA = readSerialCommand();
+
+    if (CDATA.commandIndex >= 0 && CDATA.commandIndex < this->numCommands) {
+      // Call the appropriate handler function using function pointer
+      commandHandlers[CDATA.commandIndex](CDATA.args, CDATA.argCount);
+    } else {
+      this->serialPort.println(helpTxt);
+    }
+  }
+}
+
 CommandData SerialCommandProcessor::readSerialCommand() {
   CommandData result;
   
   // Read input from serial port
-  String inputString = Serial.readStringUntil('\n');
+  String inputString = this->serialPort.readStringUntil('\n');
   
   // Split the input string  
   int partIndex = 0;

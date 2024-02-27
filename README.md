@@ -1,7 +1,9 @@
-# SerialCommandPRocessor_Arduino
+# SerialCommandProcessor_Arduino
 A basic BETA library to take serial commands and action them
 
 **See `SerialCommands.ino` for an working example.**
+
+
 
 **Compile with Arduino IDE or PlatformIO.**
 
@@ -12,6 +14,9 @@ Please report if something is not working.
 
 **Limitations:**
 1. BETA versions - some bugs may exist. Please report if you encounter something. 
+
+**Changelog:**
+Moved command processing from sketch into library
 
 **TODO:**
 1. Code and comment cleanup

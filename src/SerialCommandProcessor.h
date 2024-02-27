@@ -15,17 +15,21 @@ struct CommandData {
   int argCount;
 };
 
+typedef void (*CommandHandler)(String*, int);
 
 class SerialCommandProcessor {
 public:
-  SerialCommandProcessor(HardwareSerial* serialPort, int numCommands, const char* commandStrings[], char delimiter);
+  SerialCommandProcessor(HardwareSerial *serialPort, int numCommands, const char* commandStrings[], char delimiter);
 
   CommandData readSerialCommand();
   
+  void processSerialCommand(CommandHandler commandHandlers[], const char* helpTxt);
+  
 private:
   int numCommands;
-  String* commandStrings;
-  HardwareSerial* serialPort;
+  String* commandStrings;  
+  const char* helpTxt;
+  HardwareSerial serialPort;
 
   int parseCommand(String command);
   

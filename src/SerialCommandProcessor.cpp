@@ -5,7 +5,7 @@ SerialCommandProcessor::SerialCommandProcessor(HardwareSerial *serialPort, int n
   // Set the number of commands
   this->numCommands = numCommands;
   this->delimiter = delimiter;
-  this->serialPort = serialPort;
+  _serialPort = serialPort;
   
   // Dynamically allocate memory for command strings
   commandStrings = new String[numCommands];
@@ -18,14 +18,14 @@ SerialCommandProcessor::SerialCommandProcessor(HardwareSerial *serialPort, int n
 
 void SerialCommandProcessor::processSerialCommand(CommandHandler commandHandlers[], const char* helpTxt) {
 	
-  if (this->serialPort.available()) {
+  if (_serialPort->available()) {
     CommandData CDATA = readSerialCommand();
 
     if (CDATA.commandIndex >= 0 && CDATA.commandIndex < this->numCommands) {
       // Call the appropriate handler function using function pointer
       commandHandlers[CDATA.commandIndex](CDATA.args, CDATA.argCount);
     } else {
-      this->serialPort.println(helpTxt);
+      _serialPort->println(helpTxt);
     }
   }
 }
@@ -34,7 +34,7 @@ CommandData SerialCommandProcessor::readSerialCommand() {
   CommandData result;
   
   // Read input from serial port
-  String inputString = this->serialPort.readStringUntil('\n');
+  String inputString = _serialPort->readStringUntil('\n');
   
   // Split the input string  
   int partIndex = 0;

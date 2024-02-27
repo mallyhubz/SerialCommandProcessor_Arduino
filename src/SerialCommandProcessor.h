@@ -29,11 +29,12 @@ private:
   int numCommands;
   String* commandStrings;  
   const char* helpTxt;
-  HardwareSerial serialPort;
 
   int parseCommand(String command);
   
   char delimiter = (char)DEFAULT_DELIMITER;
+  
+  HardwareSerial *_serialPort;
 };
 
 #endif

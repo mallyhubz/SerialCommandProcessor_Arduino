@@ -25,7 +25,12 @@ void SerialCommandProcessor::processSerialCommand(CommandHandler commandHandlers
       // Call the appropriate handler function using function pointer
       commandHandlers[CDATA.commandIndex](CDATA.args, CDATA.argCount);
     } else {
-      _serialPort->println(helpTxt);
+      //_serialPort->println(helpTxt);
+		char printChar;
+	    for (int i = 0; i < strlen_P(helpTxt); i++) {
+			printChar = pgm_read_byte(helpTxt + i);
+			_serialPort->print(printChar);
+		}
     }
   }
 }

@@ -12,6 +12,9 @@
 //
 // ############### Update these with your commands  ###############
 
+const char HELP_TXT_ARRAY[] PROGMEM = HELP_TXT;
+const char *HELP_TXT_PTR = (const char *) HELP_TXT_ARRAY;
+
 const char* COMMAND_STRING_ARRAY[NUM_COMMANDS] = COMMAND_STRINGS;
 
 SerialCommandProcessor scp(&Serial, NUM_COMMANDS,COMMAND_STRING_ARRAY,(char)DELIMITER);
@@ -51,5 +54,5 @@ void setup()
 
 void loop()
 {   
-  scp.processSerialCommand(commandHandlers,HELP_TXT);
+  scp.processSerialCommand(commandHandlers,HELP_TXT_PTR);
 }
